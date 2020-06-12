@@ -30,14 +30,6 @@ fi
 # Ensure our Magento directory exists
 mkdir -p $MAGENTO_ROOT
 
-CRON_LOG=/var/log/cron.log
-
-if [ ! -z "${CRONTAB}" ]; then
-    echo "${CRONTAB}" > /etc/cron.d/magento
-fi
-
-touch $CRON_LOG
-
 PHP_EXT_DIR=/usr/local/etc/php/conf.d
 
 # Configure Sendmail if required
@@ -64,13 +56,7 @@ if [ -x "$(command -v ${PHP_EXT_COM_ON})" ] && [ ! -z "${PHP_EXTENSIONS}" ]; the
       ${PHP_EXT_COM_ON} ${PHP_EXTENSIONS}
 fi
 
-
-# Configure composer
-[ ! -z "${COMPOSER_GITHUB_TOKEN}" ] && \
-    composer config --global github-oauth.github.com $COMPOSER_GITHUB_TOKEN
-
-[ ! -z "${COMPOSER_MAGENTO_USERNAME}" ] && \
-    composer config --global http-basic.repo.magento.com \
-        $COMPOSER_MAGENTO_USERNAME $COMPOSER_MAGENTO_PASSWORD
+# Configure PHP-FPM
+[ ! -z "${MAGENTO_RUN_MODE}" ] && sed -i "s/!MAGENTO_RUN_MODE!/${MAGENTO_RUN_MODE}/" /usr/local/etc/php-fpm.conf
 
 exec "$@"
