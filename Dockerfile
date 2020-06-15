@@ -166,7 +166,6 @@ RUN docker-php-ext-enable \
   soap \
   sockets \
   sodium \
-  ssh2 \
   sysvmsg \
   sysvsem \
   sysvshm \
