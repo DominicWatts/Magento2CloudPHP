@@ -36,8 +36,6 @@ RUN apt-get update \
   libpspell-dev \
   librecode0 \
   librecode-dev \
-  libssh2-1 \
-  libssh2-1-dev \
   libtidy-dev \
   libxslt1-dev \
   libyaml-dev \
@@ -98,8 +96,7 @@ RUN pecl install -o -f \
   propro \
   raphf \
   redis \
-  ssh2-1.1.2 \
-  xdebug-2.6.1 \
+  xdebug-2.7.1 \
   yaml
 
 RUN curl -A "Docker" -o /tmp/blackfire-probe.tar.gz -D - -L -s https://blackfire.io/api/v1/releases/probe/php/linux/amd64/$(php -r "echo PHP_MAJOR_VERSION.PHP_MINOR_VERSION;") \
@@ -167,7 +164,6 @@ RUN docker-php-ext-enable \
   soap \
   sockets \
   sodium \
-  ssh2 \
   sysvmsg \
   sysvsem \
   sysvshm \
