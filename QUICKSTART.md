@@ -10,11 +10,11 @@ git clone git@github.com:DominicWatts/Magento2CloudDocker.git ./
     
 ## 3 Create magento folder
 
-    mkdir app
+    mkdir htdocs
     
 ## 4 Download
 
-Inside `./app`
+Inside `./htdocs`
 
 ### 4.1 Hypernode
 
@@ -29,6 +29,12 @@ Or
 Download magento from https://magento.com/tech-resources/download
  
 ## 5 Start Containers
+
+Copy tokens into newrelic.ini
+
+    cp newrelic/newrelic.sample.ini newrelic/newrelic.ini
+
+Start Docker
 
     docker compose up -d
     
@@ -48,3 +54,9 @@ http://magento2.docker/setup/
   - **db name:** magento2
   - **db user:** magento2
   - **db password:** magento2
+  
+## 7 Tweak
+
+PHP settings can be adjusted via
+
+    `./app/php.ini`
