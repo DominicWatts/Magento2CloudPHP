@@ -29,15 +29,9 @@ RUN apt-get update \
   libgpgme11-dev \
   libmagickwand-dev \
   libmagickcore-dev \
-  libc-client-dev \
-  libkrb5-dev \
   libicu-dev \
   libldap2-dev \
   libpspell-dev \
-  librecode0 \
-  librecode-dev \
-  libssh2-1 \
-  libssh2-1-dev \
   libtidy-dev \
   libxslt1-dev \
   libyaml-dev \
@@ -47,15 +41,11 @@ RUN apt-get update \
 
 # Configure the gd library
 RUN docker-php-ext-configure \
-  gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/
-RUN docker-php-ext-configure \
-  imap --with-kerberos --with-imap-ssl
+  gd --with-freetype=/usr/include/ --with-jpeg=/usr/include/
 RUN docker-php-ext-configure \
   ldap --with-libdir=lib/x86_64-linux-gnu
 RUN docker-php-ext-configure \
   opcache --enable-opcache
-RUN docker-php-ext-configure \
-  zip --with-libzip
 
 # Install required PHP extensions
 RUN docker-php-ext-install -j$(nproc) \
@@ -66,14 +56,12 @@ RUN docker-php-ext-install -j$(nproc) \
   gd \
   gettext \
   gmp \
-  imap \
   intl \
   ldap \
   mysqli \
   opcache \
   pdo_mysql \
   pspell \
-  recode \
   shmop \
   soap \
   sockets \
@@ -98,8 +86,7 @@ RUN pecl install -o -f \
   propro \
   raphf \
   redis \
-  ssh2-1.1.2 \
-  xdebug-2.6.1 \
+  xdebug-2.9.3 \
   yaml
 
 RUN curl -A "Docker" -o /tmp/blackfire-probe.tar.gz -D - -L -s https://blackfire.io/api/v1/releases/probe/php/linux/amd64/$(php -r "echo PHP_MAJOR_VERSION.PHP_MINOR_VERSION;") \
@@ -111,6 +98,7 @@ RUN curl -A "Docker" -o /tmp/blackfire-probe.tar.gz -D - -L -s https://blackfire
   && rm -rf /tmp/blackfire /tmp/blackfire-probe.tar.gz
 RUN rm -f /usr/local/etc/php/conf.d/*sodium.ini \
   && rm -f /usr/local/lib/php/extensions/*/*sodium.so \
+  && apt-get remove libsodium* -y  \
   && mkdir -p /tmp/libsodium  \
   && curl -sL https://github.com/jedisct1/libsodium/archive/1.0.18-RELEASE.tar.gz | tar xzf - -C  /tmp/libsodium \
   && cd /tmp/libsodium/libsodium-1.0.18-RELEASE/ \
@@ -120,14 +108,6 @@ RUN rm -f /usr/local/etc/php/conf.d/*sodium.ini \
   && cd / \
   && rm -rf /tmp/libsodium  \
   && pecl install -o -f libsodium
-RUN cd /tmp \
-  && curl -O https://downloads.ioncube.com/loader_downloads/ioncube_loaders_lin_x86-64.tar.gz \
-  && tar zxvf ioncube_loaders_lin_x86-64.tar.gz \
-  && export PHP_VERSION=$(php -r "echo PHP_MAJOR_VERSION.'.'.PHP_MINOR_VERSION;") \
-  && export PHP_EXT_DIR=$(php-config --extension-dir) \
-  && cp "./ioncube/ioncube_loader_lin_${PHP_VERSION}.so" "${PHP_EXT_DIR}/ioncube.so" \
-  && rm -rf ./ioncube \
-  && rm ioncube_loaders_lin_x86-64.tar.gz
 RUN \
   curl -L https://github.com/DominicWatts/newrelic-php-agent/raw/5-9.10.1.263/newrelic-php5-9.10.1.263-linux.tar.gz  | tar -C /tmp -zx && \
   export NR_INSTALL_USE_CP_NOT_LN=1 && \
@@ -148,7 +128,6 @@ RUN docker-php-ext-enable \
   gnupg \
   igbinary \
   imagick \
-  imap \
   intl \
   ldap \
   mailparse \
@@ -161,13 +140,11 @@ RUN docker-php-ext-enable \
   propro \
   pspell \
   raphf \
-  recode \
   redis \
   shmop \
   soap \
   sockets \
   sodium \
-  ssh2 \
   sysvmsg \
   sysvsem \
   sysvshm \
@@ -177,8 +154,7 @@ RUN docker-php-ext-enable \
   xsl \
   yaml \
   zip \
-  pcntl \
-  ioncube
+  pcntl
 
 RUN groupadd -g 1000 www && useradd -g 1000 -u 1000 -d ${MAGENTO_ROOT} -s /bin/bash www
 
