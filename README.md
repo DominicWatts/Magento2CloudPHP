@@ -8,9 +8,11 @@ Configured with persistent storage
 
 [Quickstart Guide](QUICKSTART.md)
 
+[New Relic Guide](NEWRELIC.md)
+
 ## Usage
 
-Extract Magento open source to `/app`
+Extract Magento open source to `/htdocs`
 
 ### Generic
 
@@ -95,7 +97,7 @@ Warning: permissions
 
 ### Run CLI installer
 
-With files extracted to `/app` run CLI install process
+With files extracted to `/htdocs` run CLI install process
 
     docker-compose run --rm cli magento-command setup:install --admin-firstname Admin --admin-lastname User [...]
 
@@ -121,13 +123,7 @@ Configure magento to use redis, elasticsearch and varnish if you choose to run t
 
 - [Docker Hub](https://hub.docker.com/r/domw/magento2-cloud-nginx)
 
-    cd images/nginx/1.9
-
-    docker login
-
-    docker build -t domw/magento2-cloud-nginx:1.9 ./
-
-    docker push domw/magento2-cloud-nginx:1.9
+- [Git](https://github.com/DominicWatts/Magento2CloudNginx)
 
 nginx versions: 1.9, 1.10
 
@@ -135,53 +131,29 @@ nginx versions: 1.9, 1.10
 
 - [Docker Hub](https://hub.docker.com/r/domw/magento2-cloud-php)
 
-    cd images/php/7.2-fpm
+- [Git](https://github.com/DominicWatts/Magento2CloudPHP)
 
-    docker login
-
-    docker build -t domw/magento2-cloud-php:7.2-fpm ./
-
-    docker push domw/magento2-cloud-php:7.2-fpm
-
-php versions: 7.2, 7.3, 7.4
+php versions: 7.1, 7.2, 7.3, 7.4
 
 ### php-cli
 
 - [Docker Hub](https://hub.docker.com/r/domw/magento2-cloud-php)
 
-    cd images/php/7.2-cli
+- [Git](https://github.com/DominicWatts/Magento2CloudPHP)
 
-    docker login
-
-    docker build -t domw/magento2-cloud-php:7.2-cli ./
-
-    docker push domw/magento2-cloud-php:7.2-cli
-
-php versions: 7.2, 7.3, 7.4    
+php versions: 7.1, 7.2, 7.3, 7.4
 
 ### tls
 
 - [Docker Hub](https://hub.docker.com/r/domw/magento2-cloud-tls)
 
-    cd images/tls
-
-    docker login
-
-    docker build -t domw/magento2-cloud-tls:latest ./
-
-    docker push domw/magento2-cloud-tls:latest
+- [Git](https://github.com/DominicWatts/Magento2CloudTLS)
 
 ### varnish
 
 - [Docker Hub](https://hub.docker.com/r/domw/magento2-cloud-varnish)
 
-    cd images/varnish/6.2
-
-    docker login
-
-    docker build -t domw/magento2-cloud-varnish:6.2 ./
-
-    docker push domw/magento2-cloud-varnish:6.2
+- [Git](https://github.com/DominicWatts/Magento2CloudVarnish)
 
 varnish versions: 4.0, 6.2
 
@@ -189,16 +161,9 @@ varnish versions: 4.0, 6.2
 
 - [Docker Hub](https://hub.docker.com/r/domw/magento2-cloud-elasticsearch)
 
-    cd images/elasticsearch/7.6
-
-    docker login
-
-    docker build -t domw/magento2-cloud-elasticsearch:7.6 ./
-
-    docker push domw/magento2-cloud-elasticsearch:7.6
+- [Git](https://github.com/DominicWatts/Magento2CloudElasticsearch)
 
 elasticsearch versions: 1.7, 2.4, 5.2, 6.5, 6.8, 7.5, 7.6
-
 
 ## Useful Resources
 - [Docker Hub](https://hub.docker.com/r/domw/)
@@ -354,13 +319,13 @@ services:
       - MAGENTO_CLOUD_RELATIONSHIPS=eyJkYXRhYmFzZSI6W3siaG9zdCI6ImRiIiwicGF0aCI6Im1hZ2VudG8yIiwicGFzc3dvcmQiOiJtYWdlbnRvMiIsInVzZXJuYW1lIjoibWFnZW50bzIiLCJwb3J0IjoiMzMwNiJ9XSwicmVkaXMiOlt7Imhvc3QiOiJyZWRpcyIsInBvcnQiOiI2Mzc5In1dLCJlbGFzdGljc2VhcmNoIjpbeyJob3N0IjoiZWxhc3RpY3NlYXJjaCIsInBvcnQiOiI5MjAwIn1dfQ==
       - MAGENTO_CLOUD_ROUTES=eyJodHRwOlwvXC9tYWdlbnRvMi5kb2NrZXJcLyI6eyJ0eXBlIjoidXBzdHJlYW0iLCJvcmlnaW5hbF91cmwiOiJodHRwOlwvXC97ZGVmYXVsdH0ifSwiaHR0cHM6XC9cL21hZ2VudG8yLmRvY2tlclwvIjp7InR5cGUiOiJ1cHN0cmVhbSIsIm9yaWdpbmFsX3VybCI6Imh0dHBzOlwvXC97ZGVmYXVsdH0ifX0=
       - MAGENTO_CLOUD_VARIABLES=eyJBRE1JTl9FTUFJTCI6ImFkbWluQGV4YW1wbGUuY29tIiwiQURNSU5fUEFTU1dPUkQiOiIxMjMxMjNxIiwiQURNSU5fVVJMIjoiYWRtaW4ifQ==
-      - MAGENTO_RUN_MODE=developer
+      - MAGENTO_RUN_MODE=default
       - 'PHP_EXTENSIONS=bcmath bz2 calendar exif gd gettext intl mysqli pcntl pdo_mysql soap sockets sysvmsg sysvsem sysvshm opcache zip redis xsl ioncube'
 volumes:
   app:
     driver_opts:
       type: none
-      device: '${PWD}/app'
+      device: '${PWD}/htdocs'
       o: bind
 networks:
   magento:
@@ -376,6 +341,12 @@ Optional components
   - elasticsearch
   - redis
   - mailhog
+  
+### Tweaks
+
+PHP settings can be adjusted via
+
+    `./htdocs/php.ini`
   
 ## Mailhog
 
