@@ -91,6 +91,8 @@ RUN docker-php-ext-install -j$(nproc) \
   imap \
   intl \
   ldap \
+  mbstring \ 
+  mcrypt \
   mysqli \
   opcache \
   pdo_mysql \
