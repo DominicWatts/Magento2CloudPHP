@@ -97,7 +97,6 @@ RUN pecl install -o -f \
   mailparse \
   msgpack \
   oauth \
-  pcov \
   propro \
   raphf \
   redis \
@@ -159,7 +158,6 @@ RUN docker-php-ext-enable \
   mysqli \
   oauth \
   opcache \
-  pcov \
   pdo_mysql \
   propro \
   pspell \
@@ -187,7 +185,6 @@ RUN groupadd -g 1000 www && useradd -g 1000 -u 1000 -d ${MAGENTO_ROOT} -s /bin/b
 
 COPY etc/php-fpm.ini /usr/local/etc/php/conf.d/zz-magento.ini
 COPY etc/php-xdebug.ini /usr/local/etc/php/conf.d/zz-xdebug-settings.ini
-COPY etc/php-pcov.ini /usr/local/etc/php/conf.d/zz-pcov-settings.ini
 COPY etc/mail.ini /usr/local/etc/php/conf.d/zz-mail.ini
 COPY etc/php-fpm.conf /usr/local/etc/
 COPY etc/php-gnupg.ini /usr/local/etc/php/conf.d/gnupg.ini
