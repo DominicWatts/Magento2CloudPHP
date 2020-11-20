@@ -109,6 +109,7 @@ RUN docker-php-ext-install -j$(nproc) \
 
 RUN pecl install -o -f \
   geoip-1.1.1 \
+  mcrypt-1.0.0 \
   gnupg \
   igbinary \
   imagick \
