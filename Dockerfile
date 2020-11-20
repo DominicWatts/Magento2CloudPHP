@@ -61,10 +61,6 @@ RUN apt-get update \
   zip \
   && rm -rf /var/lib/apt/lists/*
 
-# Install PyYAML
-RUN pip3 install --upgrade setuptools \
-    && pip3 install pyyaml
-
 # Install Grunt
 RUN npm install -g grunt-cli
 
@@ -119,7 +115,6 @@ RUN pecl install -o -f \
   mailparse \
   msgpack \
   oauth \
-  pcov \
   propro \
   raphf \
   redis \
@@ -181,7 +176,6 @@ RUN docker-php-ext-enable \
   mysqli \
   oauth \
   opcache \
-  pcov \
   pdo_mysql \
   propro \
   pspell \
@@ -207,7 +201,6 @@ RUN docker-php-ext-enable \
 
 ADD etc/php-cli.ini /usr/local/etc/php/conf.d/zz-magento.ini
 ADD etc/php-xdebug.ini /usr/local/etc/php/conf.d/zz-xdebug-settings.ini
-ADD etc/php-pcov.ini /usr/local/etc/php/conf.d/zz-pcov-settings.ini
 ADD etc/mail.ini /usr/local/etc/php/conf.d/zz-mail.ini
 ADD etc/php-gnupg.ini /usr/local/etc/php/conf.d/gnupg.ini
 
