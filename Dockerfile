@@ -95,6 +95,7 @@ RUN pecl install -o -f \
   igbinary \
   imagick \
   mailparse \
+  mcrypt-1.0.0 \
   msgpack \
   oauth \
   propro \
