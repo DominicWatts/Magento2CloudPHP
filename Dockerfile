@@ -28,8 +28,8 @@ RUN apt-get update \
   python3 \
   python3-pip \
   redis-tools \
-  sendmail \
   sendmail-bin \
+  sendmail \
   sudo \
   unzip \
   vim \
@@ -115,11 +115,11 @@ RUN curl -A "Docker" -o /tmp/blackfire-probe.tar.gz -D - -L -s https://blackfire
   && mkdir -p /tmp/blackfire \
   && tar zxpf /tmp/blackfire-probe.tar.gz -C /tmp/blackfire \
   && mv /tmp/blackfire/blackfire-*.so $(php -r "echo ini_get ('extension_dir');")/blackfire.so \
-  && ( echo extension=blackfire.so \
-  && echo blackfire.agent_socket=tcp://blackfire:8707 ) > $(php -i | grep "additional .ini" | awk '{print $9}')/blackfire.ini \
+  && echo blackfire.agent_socket=tcp://blackfire:8707 > $(php -i | grep "additional .ini" | awk '{print $9}')/blackfire.ini \
   && rm -rf /tmp/blackfire /tmp/blackfire-probe.tar.gz
 RUN rm -f /usr/local/etc/php/conf.d/*sodium.ini \
   && rm -f /usr/local/lib/php/extensions/*/*sodium.so \
+  && apt-get remove libsodium* -y  \
   && mkdir -p /tmp/libsodium  \
   && curl -sL https://github.com/jedisct1/libsodium/archive/1.0.18-RELEASE.tar.gz | tar xzf - -C  /tmp/libsodium \
   && cd /tmp/libsodium/libsodium-1.0.18-RELEASE/ \
@@ -201,7 +201,6 @@ RUN ["chmod", "+x", \
     "/usr/local/bin/cloud-build", \
     "/usr/local/bin/cloud-deploy", \
     "/usr/local/bin/cloud-post-deploy", \
-    "/usr/local/bin/composer-installer", \
     "/usr/local/bin/run-cron", \
     "/usr/local/bin/run-hooks" \
 ]
