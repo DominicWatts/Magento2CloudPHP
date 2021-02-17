@@ -59,4 +59,12 @@ fi
 # Configure PHP-FPM
 [ ! -z "${MAGENTO_RUN_MODE}" ] && sed -i "s/!MAGENTO_RUN_MODE!/${MAGENTO_RUN_MODE}/" /usr/local/etc/php-fpm.conf
 
+# Set host.docker.inernal if not available
+HOST_NAME="host.docker.internal"
+HOST_IP=$(php -r "putenv('RES_OPTIONS=retrans:1 retry:1 timeout:1 attempts:1'); echo gethostbyname('$HOST_NAME');")
+if [[ "$HOST_IP" == "$HOST_NAME" ]]; then
+  HOST_IP=$(/sbin/ip route|awk '/default/ { print $3 }')
+  printf "\n%s %s\n" "$HOST_IP" "$HOST_NAME" >> /etc/hosts
+fi
+
 exec "$@"
